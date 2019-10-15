@@ -1,6 +1,8 @@
 import vk_api
 from telegram.ext import Updater, CommandHandler
 import requests
+import os
+import random
 import re
 import json
 import logging
@@ -53,6 +55,11 @@ def ask(update, context): #picture of the day function. Get all the return varia
     context.bot.send_message(chat_id=update.effective_chat.id, text=answer)
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=pic)
 
+def roll(update, context):
+    directory = "pics/"
+    random_image = random.choice(os.listdir(directory))
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(directory + random_image,'rb'))
+
 def main():
     updater = Updater(token='982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q', use_context=True)
     dispatcher = updater.dispatcher
@@ -60,6 +67,8 @@ def main():
     dispatcher.add_handler(start_handler)
     ask_handler = CommandHandler('ask', ask)
     dispatcher.add_handler(ask_handler)
+    roll_handler = CommandHandler('roll', roll)
+    dispatcher.add_handler(roll_handler)
     updater.start_polling()
     print('shit is going down')
     updater.idle()
