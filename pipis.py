@@ -22,9 +22,7 @@ def GetShit(): #сгребаем последнюю запись со стены
 
     response = vk.wall.get(domain='pipis_everyday', count=1)  # Используем метод wall.get
     response_two = response['items'][0]['text'] #parsing the JSON output for the text block
-    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][7] #parsing the JSON output for the picture
     return response_two #return the variable with the text
-    return response_three
 
 def GetPic(): #сгребаем картинку со стены Pipis
 
@@ -40,7 +38,7 @@ def GetPic(): #сгребаем картинку со стены Pipis
     vk = vk_session.get_api()
 
     response = vk.wall.get(domain='pipis_everyday', count=1)  # Используем метод wall.get с VK.python
-    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][1]['url'] #parsing the JSON output for the text block
+    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][7]['url'] #parsing the JSON output for the text block
     return response_three #return the variable with the pic url
 
 
