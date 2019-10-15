@@ -56,7 +56,7 @@ def ask(update, context): #picture of the day function. Get all the return varia
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=pic)
 
 def main():
-    updater = Updater(token='982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q', use_context=True)
+    updater = Updater('982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q')
     dispatcher = updater.dispatcher
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
