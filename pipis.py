@@ -38,7 +38,7 @@ def GetPic(): #сгребаем картинку со стены Pipis
     vk = vk_session.get_api()
 
     response = vk.wall.get(domain='pipis_everyday', count=1)  # Используем метод wall.get с VK.python
-    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][7]['url'] #parsing the JSON output for the text block
+    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][4]['url'] #parsing the JSON output for the text block
     return response_three #return the variable with the pic url
 
 
@@ -54,7 +54,7 @@ def ask(update, context): #picture of the day function. Get all the return varia
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=pic)
 
 def main():
-    updater = Updater('982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q')
+    updater = Updater(token='982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q', use_context=True)
     dispatcher = updater.dispatcher
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
