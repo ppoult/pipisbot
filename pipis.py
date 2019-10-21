@@ -1,10 +1,10 @@
 import vk_api
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
 import os
 import random
 import re
-import json
+import json, apiai
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO) #enable logging
@@ -60,15 +60,30 @@ def roll(update, context):
     random_image = random.choice(os.listdir(directory))
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(directory + random_image,'rb'))
 
+def textMessage(update, context):
+    request = apiai.ApiAI('b746273a2e4c49f8b91d9fe91784d15a').text_request() # Токен API к Dialogflow
+    request.lang = 'ru' # На каком языке будет послан запрос
+    request.session_id = 'small-talk-bfkbhc' # ID Сессии диалога (нужно, чтобы потом учить бота)
+    request.query = update.message.text # Посылаем запрос к ИИ с сообщением от юзера
+    responseJson = json.loads(request.getresponse().read().decode('utf-8'))
+    response = responseJson['result']['fulfillment']['speech'] # Разбираем JSON и вытаскиваем ответ
+    # Если есть ответ от бота - присылаем юзеру, если нет - бот его не понял
+    if response:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=response)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Я Вас не совсем понял!')
+
 def main():
     updater = Updater(token='982560961:AAHERlYwllDeXwdv-rXwdwj0NyazSsXC27Q', use_context=True)
     dispatcher = updater.dispatcher
+    text_message_handler = MessageHandler(Filters.text, textMessage)
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
     ask_handler = CommandHandler('ask', ask)
     dispatcher.add_handler(ask_handler)
     roll_handler = CommandHandler('roll', roll)
     dispatcher.add_handler(roll_handler)
+    dispatcher.add_handler(text_message_handler)
     updater.start_polling()
     print('shit is going down')
     updater.idle()
