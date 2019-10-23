@@ -23,7 +23,7 @@ def GetShit(): #сгребаем последнюю запись со стены
     vk = vk_session.get_api()
 
     response = vk.wall.get(domain='pipis_everyday', count=1)  # Используем метод wall.get
-    response_two = response['items'][0]['text'] #parsing the JSON output for the text block
+    response_two = response['items'][0]['text'] #парсим JSON
     return response_two #return the variable with the text
 
 def GetPic(): #сгребаем картинку со стены Pipis
@@ -40,15 +40,15 @@ def GetPic(): #сгребаем картинку со стены Pipis
     vk = vk_session.get_api()
 
     response = vk.wall.get(domain='pipis_everyday', count=1)  # Используем метод wall.get с VK.python
-    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][4]['url'] #parsing the JSON output for the text block
-    return response_three #return the variable with the pic url
+    response_three = response['items'][0]['attachments'][0]['photo']['sizes'][4]['url'] #парсим JSON
+    return response_three 
 
 
 
 def start(update, context):  #greetings function
     context.bot.send_message(chat_id=update.effective_chat.id, text='Привет. Я — Пипис, полиморфный цыпленок. Могу подскзать, какой сегодня день.')
 
-def ask(update, context): #picture of the day function. Get all the return variables and paste them into the reply
+def ask(update, context): 
     answer = GetShit()
     pic = GetPic()
     context.bot.send_message(chat_id=update.effective_chat.id, text='Бакаа, бкааа...бкаа, бка')
